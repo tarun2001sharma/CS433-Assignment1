@@ -7,30 +7,33 @@ def commands(encrypted_command, mode):
     response = ""
     status = ""
 
-    print("server command is running: ", command)
+    print("The command", command, "is running")
     
-    if (command == 'cwd' or command == 'CWD'):
+    if (command == 'cwd'):
         response = os.getcwd()
         status = "OK"
 
-    elif (command == 'ls' or command == 'LS'):
-        response = "Directory List: \n"
+    elif (command == 'ls'):
+        s = "Files located in the current working directory: \n"
+        response = ""
         for i in os.listdir():
-            response += i + "\n"
             status = "NOK"
-
-    elif (command.split(' ')[0] == "cd" or command.split(' ')[0] == "CD"):
+            response += i 
+            response += "\n"
+            
+    elif (command.split(' ')[0] == "cd"):
         try:
             path = command[3:]
+            s = "Directory has been changed to "
             os.chdir(path)
-            curr_dir = os.getcwd()
-            response = 'Directory has been changed to ' +  curr_dir
+            dir_change = os.getcwd()
+            response = s +  dir_change
             status = "OK"
         except:
-            response = 'Directory does not exist!'
+            response = "Directory specified does not exist. Please check and try again later."
             status = "NOK"
 
-    elif (command.split(' ')[0] == "dwd" or command.split(' ')[0] == "DWD"):
+    elif (command.split(' ')[0] == "dwd"):
         try:
             path = command[4:]
             f = open(path, 'r')
@@ -38,25 +41,23 @@ def commands(encrypted_command, mode):
             f.close()
             status = "OK"
         except:
-            response = 'File does not exist!'
             status = "NOK"
+            response = "File path does not exist. Please check and try again later."
 
-    elif (command.split(' ')[0] == "upd" or command.split(' ')[0] == "UPD"):
+    elif (command.split(' ')[0] == "upd"):
         try:
-            if(len(command) < 4):
-                raise Exception()
             data = command[4:]
-            f = open('uploaded_file.txt', 'w')
+            f = open('file_upload.txt', 'w')
             f.write(data)
             f.close()
-            response = "File has been uploaded to server."
             status = "OK"
+            response = "Your file has been uploaded to the remote server."
         except:
-            response = 'File could not be uploaded!'
             status = "NOK"
+            response = "Your file could not be uploaded."
 
     else:
-        response = "Command not available."
+        response = "Command not available. Please check and try again later."
         status = "NOK"
 
     return response, status

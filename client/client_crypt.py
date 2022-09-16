@@ -64,6 +64,3 @@ def decrypt(data, crypt_no):
     
     return data
 
-
-# ans = encrypt_substitute("hello##, I$3 don7&'t want to eat pizza+5.")
-# print(ans)
